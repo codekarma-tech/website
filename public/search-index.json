@@ -1,0 +1,31 @@
+{
+  "/": {
+    "version": 1,
+    "title": "Code Karma",
+    "description": "CodeKarma provides real-time production insights during development, helping teams instantly identify active flows, dormant code, and hidden tech debt—enabling smarter decisions and faster, safer software evolution.",
+    "keywords": "",
+    "h1": ["We show how your code"],
+    "h2": [],
+    "h3": [],
+    "h4": [],
+    "h5": [],
+    "h6": [],
+    "p": [
+      "actually works in production.",
+      "> Less guessing. More building.",
+      "Intuitive Insights",
+      "Engineered for Scale",
+      "Instant Setup",
+      "Watch Video",
+      "Join the Waitlist",
+      "Lorem ipsum type text in this space",
+      "Insights that matter without overwhelming you",
+      "eBPF-based instrumentation",
+      "No code change, No config change",
+      "Code that knows",
+      "its karma."
+    ],
+    "codeblock": [],
+    "url": "/"
+  }
+}
