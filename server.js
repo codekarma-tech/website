@@ -82,13 +82,12 @@ app.post("/api/subscribe", upload.none(), async (req, res) => {
 
     const cleanEmail = emailValue.trim();
 
-    // Write email to text file first (before database)
-    await writeEmailToFile(cleanEmail);
-
     try {
       // Add subscriber to database
       await addSubscriber(cleanEmail);
     } catch (error) {
+      // Write email to text file first (before database)
+      await writeEmailToFile(cleanEmail);
       console.error("Error adding email to database:", error);
     }
 
