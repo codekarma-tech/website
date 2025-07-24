@@ -119,7 +119,7 @@ const testConnection = async () => {
 const initializeDatabase = async () => {
   try {
     await testConnection();
-    await createSubscribersTable();
+    // await createSubscribersTable();
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Database initialization failed:", error);
