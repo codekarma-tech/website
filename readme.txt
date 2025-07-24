@@ -1,5 +1,9 @@
 To deploy 
 =========
+USE MAKEFILE 
+
+Below is the detailing of commands
+
 1. We need to push the image 
 
 docker buildx build --platform linux/amd64,linux/arm64 \
