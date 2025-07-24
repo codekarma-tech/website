@@ -29,10 +29,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Initialize database on server start
-// initializeDatabase().catch((error) => {
-//   console.error("Failed to initialize database:", error);
-//   process.exit(1);
-// });
+initializeDatabase().catch((error) => {
+  console.error("Failed to initialize database:", error);
+  process.exit(1);
+});
 
 // Function to write email to text file
 const writeEmailToFile = async (email) => {

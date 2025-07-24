@@ -13,19 +13,20 @@ const pool = new Pool({
 // Create subscribers table if it doesn't exist
 const createSubscribersTable = async () => {
   const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS subscribers (
-      id SERIAL PRIMARY KEY,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      is_active BOOLEAN DEFAULT true
-    );
+    CREATE TABLE IF NOT EXISTS website_logins (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    created_date timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+    last_updated_date timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+    CONSTRAINT wlogin_uk_email UNIQUE (email)
+  );
   `;
 
   try {
     await pool.query(createTableQuery);
-    console.log("Subscribers table created or already exists");
+    console.log("Website logins table created or already exists");
   } catch (error) {
-    console.error("Error creating subscribers table:", error);
+    console.error("Error creating website logins table:", error);
     throw error;
   }
 };
@@ -35,7 +36,7 @@ const addSubscriber = async (email) => {
   const client = await pool.connect();
   try {
     // Check if email already exists
-    const checkQuery = "SELECT id FROM subscribers WHERE email = $1";
+    const checkQuery = "SELECT id FROM website_logins WHERE email = $1";
     const checkResult = await client.query(checkQuery, [email]);
 
     if (checkResult.rows.length > 0) {
@@ -44,9 +45,9 @@ const addSubscriber = async (email) => {
 
     // Insert new subscriber
     const insertQuery = `
-      INSERT INTO subscribers (email) 
+      INSERT INTO website_logins (email) 
       VALUES ($1) 
-      RETURNING id, email, created_at
+      RETURNING id, email, created_date, last_updated_date
     `;
     const result = await client.query(insertQuery, [email]);
     return result.rows[0];
@@ -60,9 +61,9 @@ const getAllSubscribers = async () => {
   const client = await pool.connect();
   try {
     const query = `
-      SELECT id, email, created_at, is_active 
-      FROM subscribers 
-      ORDER BY created_at DESC
+      SELECT id, email, created_date, last_updated_date 
+      FROM website_logins 
+      ORDER BY created_date DESC
     `;
     const result = await client.query(query);
     return result.rows;
@@ -75,7 +76,7 @@ const getAllSubscribers = async () => {
 const getSubscriberCount = async () => {
   const client = await pool.connect();
   try {
-    const query = "SELECT COUNT(*) FROM subscribers WHERE is_active = true";
+    const query = "SELECT COUNT(*) FROM website_logins";
     const result = await client.query(query);
     return parseInt(result.rows[0].count);
   } finally {
@@ -88,8 +89,8 @@ const removeSubscriber = async (email) => {
   const client = await pool.connect();
   try {
     const query = `
-      UPDATE subscribers 
-      SET is_active = false 
+      UPDATE website_logins 
+      SET last_updated_date = CURRENT_TIMESTAMP
       WHERE email = $1 
       RETURNING id, email
     `;
